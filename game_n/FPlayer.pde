@@ -1,15 +1,18 @@
-class FPlayer extends FBox {
+class FPlayer extends FGameObject {
   
   FPlayer() {
-   super(gridSize, gridSize);
-   setPosition(300, 0);
+   super();
+   setPosition(0, 0);
+   setName("Player");
+   setRotatable(false);
    setFillColor(red);
   }
   
   void act() {
     handleInput();
-    checkForCollisions();
-    
+    if (isTouching("spike")){
+    setPosition(0,0);
+    }
   }
   
   void handleInput() {
@@ -22,15 +25,15 @@ class FPlayer extends FBox {
   }
   }
   
-  void checkForCollisions() {
-    ArrayList<FContact> contacts = getContacts();
-    for (int i = 0; i < contacts.size(); i++) {
-      FContact fc = contacts.get(i);
-      if (fc.contains("spike")) {
-        setPosition(0,0);
-      }
-    }
-  }
+  //void checkForCollisions() {
+  //  ArrayList<FContact> contacts = getContacts();
+  //  for (int i = 0; i < contacts.size(); i++) {
+  //    FContact fc = contacts.get(i);
+  //    if (fc.contains("spike")) {
+  //      setPosition(0,0);
+  //    }
+  //  }
+  //}
    
 
 
