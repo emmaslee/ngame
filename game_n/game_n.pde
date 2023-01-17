@@ -9,19 +9,28 @@ color leftGreen      = #009F00;
 color rightGreen     = #006F00;
 color green          = #004F00;
 color red            = #FF0000;  
+color orangered      = #FF5500;
 color purple         = #9000FF;
 color pink           = #FF03F3;
 color blue           = #0000FF;
 color orange         = #F0A000;
 color brown          = #996633;
 color treeTrunkBrown = #FF9500;
+color tgreen         = #1F9740;
 
-PImage map, mapp, mappp, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast;
+//terrain
+PImage map, mapp, mappp, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline;
+//lava
+PImage[] lava;
+PImage[] animate;
+int numberOfFrames;
+
 int gridSize = 32;
 float zoom = 2;
 boolean upkey, downkey, leftkey, rightkey, wkey, akey, skey , dkey, qkey, ekey, spacekey;
 FPlayer player;
 ArrayList<FGameObject> terrain;
+
 
 void setup() {
   size(600, 600);
@@ -47,6 +56,21 @@ void setup() {
     treeEndEast = loadImage("treetop_e.png");
     spike = loadImage("spike.png");
     bridge = loadImage("bridge_center.png");
+    trampoline = loadImage("trampoline.png");
+    
+    
+    //load lava
+    lava = new PImage[6];
+    lava[0] = loadImage("lava0.png");
+    lava[1] = loadImage("lava1.png");
+    lava[2] = loadImage("lava2.png");
+    lava[3] = loadImage("lava3.png");
+    lava[4] = loadImage("lava4.png");
+    lava[5] = loadImage("lava5.png");
+    
+   
+    
+    
  }
   
   void loadWorld(PImage img) {
@@ -107,10 +131,21 @@ void setup() {
       b.setName("spike");
       world.add(b);
     }
+    else if (c == tgreen) {
+      b.attachImage(trampoline);
+      b.setVelocity(x, -800);
+      b.setName("trampoline");
+      world.add(b);
+    }
     else if (c == pink) {
       FBridge br = new FBridge(x*gridSize, y*gridSize);
       terrain.add(br);
       world.add(br);
+    }
+    else if (c == orangered) {
+      FLava la = new FLava(x*gridSize, y*gridSize);
+      terrain.add(la);
+      world.add(la);
     }
       
     }
