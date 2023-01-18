@@ -22,7 +22,7 @@ FLava(float x, float y) {
   }
   
   void input() {
-    animate = lava;
+   
   }
   
   

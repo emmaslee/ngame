@@ -3,6 +3,7 @@ FWorld world;
 
 color white          = #FFFFFF;
 color black          = #000000;
+color gray           = #585858;
 color cyan           = #00FFFF;
 color middleGreen    = #00FF00;
 color leftGreen      = #009F00;
@@ -10,6 +11,7 @@ color rightGreen     = #006F00;
 color green          = #004F00;
 color red            = #FF0000;  
 color orangered      = #FF5500;
+color yellow         = #FFF200;
 color purple         = #9000FF;
 color pink           = #FF03F3;
 color blue           = #0000FF;
@@ -20,22 +22,33 @@ color tgreen         = #1F9740;
 
 //terrain
 PImage map, mapp, mappp, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline;
-//lava
+//lava animations
 PImage[] lava;
-PImage[] animate;
+//character animations
+PImage[] idle;
+PImage[] jump;
+PImage[] run;
+PImage[] action;
+//goomba animations
+PImage[] goomba;
+
 int numberOfFrames;
 
 int gridSize = 32;
 float zoom = 2;
 boolean upkey, downkey, leftkey, rightkey, wkey, akey, skey , dkey, qkey, ekey, spacekey;
-FPlayer player;
+
+//objects and lists of objects
 ArrayList<FGameObject> terrain;
+ArrayList<FGameObject> enemies;
+FPlayer player;
 
 
 void setup() {
   size(600, 600);
   Fisica.init(this);
   terrain = new ArrayList<FGameObject>();
+  enemies = new ArrayList<FGameObject>();
   loadImages();
   loadWorld(mappp);
   loadPlayer();
@@ -68,8 +81,30 @@ void setup() {
     lava[4] = loadImage("lava4.png");
     lava[5] = loadImage("lava5.png");
     
-   
+    //load actions
+    idle = new PImage[2];
+    idle[0] = loadImage("idle0.png");
+    idle[1] = loadImage("idle1.png");
     
+    jump = new PImage[1];
+    jump[0] = loadImage("jump0.png");
+    
+    run = new PImage[3];
+    run[0] = loadImage("runright0.png");
+    run[1] = loadImage("runright1.png");
+    run[2] = loadImage("runright2.png");
+    
+    action = idle;
+    
+    //enemies
+    goomba = new PImage[2];
+    goomba[0] = loadImage("goomba0.png");
+    goomba[0] .resize(gridSize, gridSize);
+    goomba[1] = loadImage("goomba1.png");
+    goomba[1] .resize(gridSize, gridSize);
+    
+
+ 
     
  }
   
@@ -94,6 +129,11 @@ void setup() {
         b.setName("stone");
         world.add(b);
       }
+      else if (c == gray) {
+      b.attachImage(stone);
+      b.setName("wall");
+      world.add(b);
+    }
      else if (c == cyan) { //iceblock
         b.setFriction(0);
         b.attachImage(ice); 
@@ -147,6 +187,11 @@ void setup() {
       terrain.add(la);
       world.add(la);
     }
+    else if (c == yellow) {
+      FGoomba gmb = new FGoomba(x*gridSize, y*gridSize);
+      enemies.add(gmb);
+      world.add(gmb);
+    }
       
     }
   }
@@ -169,6 +214,10 @@ void actWorld() {
   for (int i = 0; i < terrain.size(); i++) {
     FGameObject t = terrain.get(i);
     t.act();
+  }
+  for(int i = 0; i < enemies.size(); i++) {
+    FGameObject e = enemies.get(i);
+    e.act();
   }
   
 }
