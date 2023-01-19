@@ -1,0 +1,3 @@
+class FThwomp extends FGameObject {
+  
+}
