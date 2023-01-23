@@ -1,6 +1,11 @@
 import fisica.*;
 FWorld world;
 
+final int INTRO     = 0;
+final int PLAY      = 1;
+final int GAMEOVER  = 2;
+int mode;
+
 color white          = #FFFFFF;
 color black          = #000000;
 color gray           = #585858;
@@ -19,6 +24,11 @@ color orange         = #F0A000;
 color brown          = #996633;
 color treeTrunkBrown = #FF9500;
 color tgreen         = #1F9740;
+
+Button start;
+
+boolean mouseReleased;
+boolean wasPressed;
 
 //terrain
 PImage map, mapp, mappp, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline, hammer;
@@ -44,15 +54,19 @@ ArrayList<FGameObject> terrain;
 ArrayList<FGameObject> enemies;
 FPlayer player;
 
+Gif introAnimation;
 
 void setup() {
   size(600, 600);
   Fisica.init(this);
   terrain = new ArrayList<FGameObject>();
   enemies = new ArrayList<FGameObject>();
+   introAnimation = new Gif("frame_", "_delay-0.1s.gif", 4, 5, 0, 0, width, height);
   loadImages();
   loadWorld(mappp);
   loadPlayer();
+  mode = INTRO;
+   makeButtons();
 }
 
 void loadImages() {
@@ -194,9 +208,17 @@ void loadPlayer() {
 
 void draw() {
   background(white);
-  drawWorld();
-  actWorld();
-  player.act();
+   introAnimation.show();
+  if (mode == INTRO) {
+    intro();
+  } else if (mode == PLAY) {
+    play();
+  } else if (mode == GAMEOVER) {
+    gameover();
+  }
+  //drawWorld();
+  //actWorld();
+  //player.act();
 }
 
 void actWorld() {
@@ -209,6 +231,11 @@ void actWorld() {
     FGameObject e = enemies.get(i);
     e.act();
   }
+}
+
+void makeButtons() {
+  rectMode(CENTER);
+  start = new Button("START", 130, 500, 150, 100, white, black);
 }
 
 void drawWorld() {
