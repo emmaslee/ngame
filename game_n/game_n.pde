@@ -6,6 +6,8 @@ final int PLAY      = 1;
 final int GAMEOVER  = 2;
 int mode;
 
+PFont rabotnik;
+
 color white          = #FFFFFF;
 color black          = #000000;
 color gray           = #585858;
@@ -24,6 +26,8 @@ color orange         = #F0A000;
 color brown          = #996633;
 color treeTrunkBrown = #FF9500;
 color tgreen         = #1F9740;
+color lime           = #CBFF00;
+color silver         = #b5b7ec;
 
 Button start;
 
@@ -31,7 +35,7 @@ boolean mouseReleased;
 boolean wasPressed;
 
 //terrain
-PImage map, mapp, mappp, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline, hammer;
+PImage map, mappp, mapy, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline, hammer;
 //lava animations
 PImage[] lava;
 //character animations
@@ -43,6 +47,8 @@ PImage[] action;
 PImage[] goomba;
 //thwomp animations
 PImage[] thwomp;
+//hammerbro animations
+PImage[] hammerbro;
 int numberOfFrames;
 
 int gridSize = 32;
@@ -63,7 +69,7 @@ void setup() {
   enemies = new ArrayList<FGameObject>();
    introAnimation = new Gif("frame_", "_delay-0.1s.gif", 4, 5, 0, 0, width, height);
   loadImages();
-  loadWorld(mappp);
+  loadWorld(mapy);
   loadPlayer();
   mode = INTRO;
    makeButtons();
@@ -71,7 +77,7 @@ void setup() {
 
 void loadImages() {
   map = loadImage("pixelmap.png");
-  mapp = loadImage("mapwicetree.png");
+  mapy = loadImage("mapy.png");
   mappp = loadImage("mappp.png");
   ice = loadImage("ice.png");
   treeTrunk = loadImage("tree_trunk.png");
@@ -122,6 +128,12 @@ void loadImages() {
   thwomp = new PImage[2];
   thwomp[0] = loadImage("thwomp0.png");
   thwomp[1] = loadImage("thwomp1.png");
+  
+  //hammerbro animations
+  hammerbro = new PImage[2];
+  hammerbro[0] = loadImage("hammerbro0.png");
+  hammerbro[1] = loadImage("hammerbro1.png");
+  
 }
 
 void loadWorld(PImage img) {
@@ -196,10 +208,20 @@ void loadWorld(PImage img) {
         FGoomba gmb = new FGoomba(x*gridSize, y*gridSize);
         enemies.add(gmb);
         world.add(gmb);
+      } else if (c == lime) {
+        FHammerBro hmb = new FHammerBro(x*gridSize, y*gridSize);
+        enemies.add(hmb);
+        world.add(hmb);
       }
+      //} else if (c == silver) {
+      //  FThwomp tmp = new FThwomp(x*gridSize, y*gridSize);
+      //  enemies.add(tmp);
+      //  world.add(tmp);
+      //}
     }
   }
-}
+  }
+
 
 void loadPlayer() {
   player = new FPlayer();
@@ -208,6 +230,7 @@ void loadPlayer() {
 
 void draw() {
   background(white);
+  click();
    introAnimation.show();
   if (mode == INTRO) {
     intro();
