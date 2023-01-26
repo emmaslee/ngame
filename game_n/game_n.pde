@@ -30,12 +30,13 @@ color lime           = #CBFF00;
 color silver         = #b5b7ec;
 
 Button start;
+Button restart;
 
 boolean mouseReleased;
 boolean wasPressed;
 
 //terrain
-PImage map, mappp, mapy, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline, hammer;
+PImage map, mappp, mapy, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline, hammer, thwompSleepy;
 //lava animations
 PImage[] lava;
 //character animations
@@ -60,14 +61,18 @@ ArrayList<FGameObject> terrain;
 ArrayList<FGameObject> enemies;
 FPlayer player;
 
+int lives;
 Gif introAnimation;
+Gif sadMario;
 
 void setup() {
   size(600, 600);
+  lives = 3;
   Fisica.init(this);
   terrain = new ArrayList<FGameObject>();
   enemies = new ArrayList<FGameObject>();
    introAnimation = new Gif("frame_", "_delay-0.1s.gif", 4, 5, 0, 0, width, height);
+   sadMario = new Gif("frame_", "_delay-0.6s.gif", 2, 5, 0, 0, width, height);
   loadImages();
   loadWorld(mapy);
   loadPlayer();
@@ -91,6 +96,7 @@ void loadImages() {
   bridge = loadImage("bridge_center.png");
   trampoline = loadImage("trampoline.png");
   hammer = loadImage("hammer.png");
+  thwompSleepy = loadImage("thwomp0.png");
 
 
   //load lava
@@ -137,7 +143,7 @@ void loadImages() {
 }
 
 void loadWorld(PImage img) {
-  world = new FWorld(-2000, -2000, 2000, 2000);
+  world = new FWorld(-1000, -2000, 3000, 2000);
   world.setGravity(0, 900);
 
   for (int y = 0; y < img.height; y++) {
@@ -212,14 +218,14 @@ void loadWorld(PImage img) {
         FHammerBro hmb = new FHammerBro(x*gridSize, y*gridSize);
         enemies.add(hmb);
         world.add(hmb);
+      } else if (c == silver) {
+        FThwomp tmp = new FThwomp(x*gridSize, y*gridSize);
+        enemies.add(tmp);
+        world.add(tmp);
       }
-      //} else if (c == silver) {
-      //  FThwomp tmp = new FThwomp(x*gridSize, y*gridSize);
-      //  enemies.add(tmp);
-      //  world.add(tmp);
-      //}
     }
   }
+  
   }
 
 
@@ -232,12 +238,17 @@ void draw() {
   background(white);
   click();
    introAnimation.show();
+  
   if (mode == INTRO) {
     intro();
   } else if (mode == PLAY) {
     play();
   } else if (mode == GAMEOVER) {
     gameover();
+  }
+  
+  if (lives == 0) {
+    mode = GAMEOVER;
   }
   //drawWorld();
   //actWorld();
@@ -259,6 +270,7 @@ void actWorld() {
 void makeButtons() {
   rectMode(CENTER);
   start = new Button("START", 130, 500, 150, 100, white, black);
+  restart = new Button("HOME", 300, 450, 150, 100, red, blue);
 }
 
 void drawWorld() {

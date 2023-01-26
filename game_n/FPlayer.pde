@@ -17,9 +17,11 @@ class FPlayer extends FGameObject {
   void act() {
     handleInput();
     if (isTouching("spike")){
+      lives--;
     setPosition(0,0);
     }
     if (isTouching("lava")){
+      lives--;
     setPosition(0,0);
     }
     animate();

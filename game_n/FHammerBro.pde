@@ -38,7 +38,7 @@ void animate() {
       enemies.remove(this);
       player.setVelocity(player.getVelocityX(), -300);
       } else {
-        //player.lives--;
+        lives--;
         player.setPosition(0,0);
       
       }
