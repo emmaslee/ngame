@@ -1,16 +1,15 @@
 class FLava extends FGameObject {
-int frame;
+  int frame;
 
-FLava(float x, float y) { 
-  super();
-   setPosition(x,y);
-  frame = 0;
-  setName("lava");
-}
+  FLava(float x, float y) {
+    super();
+    setPosition(x, y);
+    frame = 0;
+    setName("lava");
+  }
 
   void act() {
     animate();
-    input();
   }
 
   void animate() {
@@ -18,12 +17,6 @@ FLava(float x, float y) {
     if (frameCount % 5 == 0) {
       attachImage(lava[frame]);
       frame++;
+    }
   }
-  }
-  
-  void input() {
-   
-  }
-  
-  
 }

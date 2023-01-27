@@ -17,6 +17,7 @@ class FThwomp extends FGameObject {
     if (player.getX() >= this.getX() - 10 && player.getX() <= this.getX() + 10) {
       setStatic(false);
     }
+    collide();
   }
 
 

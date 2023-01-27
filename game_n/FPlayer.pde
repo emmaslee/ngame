@@ -20,6 +20,10 @@ class FPlayer extends FGameObject {
       lives--;
     setPosition(0,0);
     }
+     if (isTouching("hammer")){
+      lives--;
+    setPosition(0,0);
+    }
     if (isTouching("lava")){
       lives--;
     setPosition(0,0);

@@ -5,6 +5,7 @@ class FGoomba extends FGameObject {
   int speed = 50;
   int frame = 0;
 
+
   FGoomba(float x, float y) {
     super();
     setPosition(x, y);
@@ -33,14 +34,13 @@ class FGoomba extends FGameObject {
       setPosition(getX()+direction, getY());
     }
     if (isTouching("player")) {
-      if (player.getY() < getY()-gridSize) {
-      world.remove(this);
-      enemies.remove(this);
-      player.setVelocity(player.getVelocityX(), -300);
+      if (player.getY() < getY()-gridSize/2) {
+        world.remove(this);
+        enemies.remove(this);
+        player.setVelocity(player.getVelocityX(), -300);
       } else {
         lives--;
-        player.setPosition(0,0);
-      
+        player.setPosition(0, 0);
       }
     }
   }

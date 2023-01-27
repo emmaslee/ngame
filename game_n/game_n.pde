@@ -1,3 +1,5 @@
+import processing.javafx.*;
+
 import fisica.*;
 FWorld world;
 
@@ -36,7 +38,7 @@ boolean mouseReleased;
 boolean wasPressed;
 
 //terrain
-PImage map, mappp, mapy, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline, hammer, thwompSleepy;
+PImage map, mappp, mapy, space, bridge, spike, ice, stone, treeTrunk, treeIntersect, treeMiddle, treeEndWest, treeEndEast, trampoline, hammer, thwompSleepy;
 //lava animations
 PImage[] lava;
 //character animations
@@ -66,12 +68,12 @@ Gif introAnimation;
 Gif sadMario;
 
 void setup() {
-  size(600, 600);
+  size(600, 600, FX2D);
   lives = 3;
   Fisica.init(this);
   terrain = new ArrayList<FGameObject>();
   enemies = new ArrayList<FGameObject>();
-   introAnimation = new Gif("frame_", "_delay-0.1s.gif", 4, 5, 0, 0, width, height);
+   introAnimation = new Gif("frame_", "_delay-0.1s.gif", 4, 9, 0, 0, width, height);
    sadMario = new Gif("frame_", "_delay-0.6s.gif", 2, 5, 0, 0, width, height);
   loadImages();
   loadWorld(mapy);
@@ -97,6 +99,7 @@ void loadImages() {
   trampoline = loadImage("trampoline.png");
   hammer = loadImage("hammer.png");
   thwompSleepy = loadImage("thwomp0.png");
+  space = loadImage("space.png");
 
 
   //load lava
